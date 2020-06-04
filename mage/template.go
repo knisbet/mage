@@ -20,11 +20,16 @@ import (
 	"strings"
 	"text/tabwriter"
 	"time"
+	
+	"github.com/gravitational/magnet"
+	
 	{{range .Imports}}{{.UniqueName}} "{{.Path}}"
 	{{end}}
 )
 
 func main() {
+	magnet.InitOutput()
+	defer magnet.Shutdown()
 	// Use local types and functions in order to avoid name conflicts with additional magefiles.
 	type arguments struct {
 		Verbose       bool          // print out log statements
