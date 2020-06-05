@@ -28,8 +28,6 @@ import (
 )
 
 func main() {
-	magnet.InitOutput()
-	defer magnet.Shutdown()
 	// Use local types and functions in order to avoid name conflicts with additional magefiles.
 	type arguments struct {
 		Verbose       bool          // print out log statements
@@ -268,11 +266,13 @@ Options:
 				os.Exit(1)
 		}
 	}
+	magnet.InitOutput()
 	if len(args.Args) < 1 {
 	{{- if .DefaultFunc.Name}}
 		ignoreDefault, _ := strconv.ParseBool(os.Getenv("MAGEFILE_IGNOREDEFAULT"))
 		if ignoreDefault {
 			if err := list(); err != nil {
+				magnet.Shutdown()
 				logger.Println("Error:", err)
 				os.Exit(1)
 			}
@@ -283,6 +283,7 @@ Options:
 		return
 	{{- else}}
 		if err := list(); err != nil {
+			magnet.Shutdown()
 			logger.Println("Error:", err)
 			os.Exit(1)
 		}
@@ -317,6 +318,7 @@ Options:
 			{{- end}}
 		{{- end}}
 		default:
+			magnet.Shutdown()
 			// should be impossible since we check this above.
 			logger.Printf("Unknown target: %q\n", args.Args[0])
 			os.Exit(1)
