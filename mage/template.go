@@ -177,6 +177,7 @@ Options:
 
 	handleError := func(logger *log.Logger, err interface{}) {
 		if err != nil {
+			magnet.Shutdown()
 			logger.Printf("Error: %+v\n", err)
 			type code interface {
 				ExitStatus() int
