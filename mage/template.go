@@ -267,7 +267,7 @@ Options:
 				os.Exit(1)
 		}
 	}
-	magnet.InitOutput()
+
 	defer magnet.Shutdown()
 	if len(args.Args) < 1 {
 	{{- if .DefaultFunc.Name}}
